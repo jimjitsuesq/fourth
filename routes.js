@@ -6,22 +6,8 @@ const { User, Course } = require('./models');
 const { authenticateUser } = require('./middleware/auth-user');
 const cookieParser = require('cookie-parser');
 
-
 // Construct a router instance.
 const router = express.Router();
-
- 
-/**
- * Route to return the currently authenticated user
- */
-/* router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
-    const authenticatedUser = await User.findOne({ 
-      where: {emailAddress: req.currentUser.emailAddress},
-      attributes: {exclude: ['password', 'createdAt', 'updatedAt']}});
-
-    res.status(200).json({ authenticatedUser });
-    
-}));  */
 
 /**
  * Route to log in a User
@@ -34,10 +20,13 @@ router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
   const authenticatedUser = await User.findOne({ 
     where: {emailAddress: req.currentUser.emailAddress},
     attributes: {exclude: ['createdAt', 'updatedAt']}});
+    console.log(authenticatedUser)
   res.status(200).cookie('user', authenticatedUser.password, { signed: true }).json({ authenticatedUser })
 }));
 
-// Log User Out
+/**
+ * Route to log out a user
+ */
 
 router.get('/signout', (req, res) => {
   res.clearCookie('user');
@@ -50,7 +39,7 @@ router.get('/signout', (req, res) => {
 router.post('/users', asyncHandler(async (req, res) => {
     try {
       await User.create(req.body);
-      return res.status(201).location('/').send();
+        return res.status(201).send();
     } catch (error) {
       if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
         const errors = error.errors.map(err => err.message);
@@ -133,9 +122,7 @@ router.put('/courses/:id', authenticateUser, asyncHandler(async (req, res, next)
       res.status(400).send({ errors })
       console.log(error.message)
     } else {
-      
       throw error;
-      
     }
   }
 }));
