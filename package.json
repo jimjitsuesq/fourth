@@ -1,10 +1,10 @@
 {
-  "name": "techdegree-fullstackjs-rest-api",
+  "name": "academic-curriculum-manager-server",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./app.js",
+    "start": "node app.js",
     "seed": "cross-env DB_ENABLE_LOGGING=true node './seed'"
   },
   "keywords": [],
@@ -21,9 +21,12 @@
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
+    "mysql2": "^2.3.0",
     "promise.prototype.finally": "^3.1.2",
     "sequelize": "^6.6.5",
     "sequelize-cli": "^6.2.0",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "ssh2": "^1.2.0",
+    "tunnel-ssh": "^4.1.4"
   }
 }

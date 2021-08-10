@@ -13,15 +13,20 @@ const router = express.Router();
  * Route to log in a User
  */
 router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
-  const options = {
-    httpOnly: false,
-    signed: true
-  }
-  const authenticatedUser = await User.findOne({ 
-    where: {emailAddress: req.currentUser.emailAddress},
-    attributes: {exclude: ['createdAt', 'updatedAt']}});
-    console.log(authenticatedUser)
-  res.status(200).cookie('user', authenticatedUser.password, { signed: true }).json({ authenticatedUser })
+    try {
+        const options = {
+            httpOnly: false,
+            signed: true
+        }
+        const authenticatedUser = await User.findOne({ 
+            where: {emailAddress: req.currentUser.emailAddress},
+            attributes: {exclude: ['createdAt', 'updatedAt']}});
+            console.log(authenticatedUser)
+            res.status(200).cookie('user', authenticatedUser.password, { signed: true }).json({ authenticatedUser})   
+    } catch (error) {
+        throw error;
+    }
+    
 }));
 
 /**
@@ -45,7 +50,9 @@ router.post('/users', asyncHandler(async (req, res) => {
         const errors = error.errors.map(err => err.message);
         res.status(400).json({ errors });
         console.error(errors) 
-      } 
+      } else {
+          throw error;
+      }
     }
 }));
 
