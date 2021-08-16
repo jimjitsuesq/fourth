@@ -9,7 +9,7 @@ const db = {};
 
 const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
     dialect: config.dialect,
-    host: '/cloudsql/portfolio-acm-server:us-central1:curriculum',
+    host: '/cloudsql/portfolio-acm-server2:us-central1:curriculum',
     pool: {
         max: config.pool.max,
         min: config.pool.min,
@@ -17,7 +17,7 @@ const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
         idle: config.pool.idle
     },
     dialectOptions: {
-        socketPath: '/cloudsql/portfolio-acm-server:us-central1:curriculum',
+        socketPath: '/cloudsql/portfolio-acm-server2:us-central1:curriculum',
     }
 });
 

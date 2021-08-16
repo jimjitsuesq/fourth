@@ -6,7 +6,7 @@ env_variables:
   DB_USER: "root"
   DB_NAME: "curriculum"
   DB_PASS: "password"
-  DB_INSTANCE: "portfolio-acm-server:us-central1:curriculum"
+  DB_INSTANCE: "portfolio-acm-server2:us-central1:curriculum"
 
 beta_settings:
-    cloud_sql_instances: portfolio-acm-server:us-central1:curriculum
+    cloud_sql_instances: portfolio-acm-server2:us-central1:curriculum
