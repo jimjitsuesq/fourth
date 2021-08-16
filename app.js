@@ -49,7 +49,7 @@ app.use(morgan('dev'));
 // A friendly greeting for the root route
 app.get('/', function(req, res) {
   res.json({
-    message: 'Welcome to the REST API project!',
+    message: 'Welcome to the Academic Curriculum Manager Rest API!',
   });
 });
 
