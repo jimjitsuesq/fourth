@@ -7,6 +7,8 @@ const express = require('express');
 const cors = require ('cors')
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+var favicon = require('serve-favicon')
+
 
 const corsOptions = { origin: 'https://ecstatic-mirzakhani-746a17.netlify.app', credentials: true }
 
@@ -16,6 +18,9 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 // create the Express app
 const app = express();
 
+
+app.use('/favicon.ico', express.static('public/images/favicon.ico'));
+app.use('/public', express.static('public')); 
 app.use(cookieParser('82e4e438a0705fabf61f9854e3b575af'));
 app.use(cors(corsOptions));
 app.use(express.json());
