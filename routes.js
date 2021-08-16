@@ -10,19 +10,14 @@ const cookieParser = require('cookie-parser');
 const router = express.Router();
 
 /**
- * Route to log in a User
+ * Route to sign in a User
  */
 router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
     try {
-        // const options = {
-        //     httpOnly: false,
-        //     signed: true
-        // }
         const authenticatedUser = await User.findOne({ 
             where: {emailAddress: req.currentUser.emailAddress},
             attributes: {exclude: ['createdAt', 'updatedAt']}});
-            console.log(authenticatedUser)
-            res.cookie('user', authenticatedUser.password, { httpOnly: false, sameSite: 'none', domain: "/" }).json({ authenticatedUser }).status(200) 
+            res.status(200).cookie('user', authenticatedUser.password, { httpOnly: false, signed: true, secure: true, sameSite: 'none' }).json({ authenticatedUser }).end()
     } catch (error) {
         throw error;
     }
@@ -61,16 +56,17 @@ router.post('/users', asyncHandler(async (req, res) => {
  */
 router.get('/courses', asyncHandler(async (req, res) => {
   let courses = await Course.findAll({
+    logging: false,
     attributes: {exclude: ['createdAt', 'updatedAt']}, 
     include: [{ 
       model: User,
       attributes: {exclude: ['createdAt', 'updatedAt']}
     }]
   });
-  console.log(JSON.stringify(req.headers))
-  console.log(JSON.stringify(res.headers))
+  console.log('All courses retrieved.')
   res.status(200).json({courses})
 }));
+
 /**
  * Route to return the course associated with a given id
  */
