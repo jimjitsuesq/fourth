@@ -9,15 +9,14 @@ const db = {};
 
 const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
     dialect: config.dialect,
-    host: '/cloudsql/portfolio-acm-server2:us-central1:curriculum',
+    logging: false,
+    host: '35.185.226.126',
+    port: '3306',
     pool: {
         max: config.pool.max,
         min: config.pool.min,
         acquire: config.pool.acquire,
         idle: config.pool.idle
-    },
-    dialectOptions: {
-        socketPath: '/cloudsql/portfolio-acm-server2:us-central1:curriculum',
     }
 });
 
