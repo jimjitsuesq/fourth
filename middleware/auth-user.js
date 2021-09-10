@@ -25,9 +25,13 @@ exports.authenticateUser = async (req, res, next) => {
   const cookie = req.signedCookies.user
 
   if (cookie) {
-    const user = await User.findOne({ where: {emailAddress: credentials.name} });
+    const user = await User.findOne({
+      where: {
+        emailAddress: credentials.name
+      }
+    });
     const authenticated = (req.signedCookies.user === user.password)
-    if (authenticated) {  
+    if (authenticated) {
       console.log(`Authentication successful for username ${user.emailAddress}`);
       req.currentUser = user;
     } else {
@@ -36,7 +40,11 @@ exports.authenticateUser = async (req, res, next) => {
   } else {
     if (credentials) {
       console.log('credentials!')
-      const user = await User.findOne({ where: {emailAddress: credentials.name} });
+      const user = await User.findOne({
+        where: {
+          emailAddress: credentials.name
+        }
+      });
       if (user) {
         const authenticated = bcrypt
           .compareSync(credentials.pass, user.password);

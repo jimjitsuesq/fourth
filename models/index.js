@@ -8,16 +8,16 @@ const config = require('../config/config.js');
 const db = {};
 
 const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
-    dialect: config.dialect,
-    logging: false,
-    host: '35.185.226.126',
-    port: '3306',
-    pool: {
-        max: config.pool.max,
-        min: config.pool.min,
-        acquire: config.pool.acquire,
-        idle: config.pool.idle
-    }
+  dialect: config.dialect,
+  logging: false,
+  host: '35.185.226.126',
+  port: '3306',
+  pool: {
+    max: config.pool.max,
+    min: config.pool.min,
+    acquire: config.pool.acquire,
+    idle: config.pool.idle
+  }
 });
 
 fs

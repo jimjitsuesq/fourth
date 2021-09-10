@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {};
   User.init({
     firstName: {
-      type: DataTypes.STRING, 
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: {
@@ -31,38 +31,38 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     emailAddress: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          notNull: {
-            msg: 'Please provide an Email Address',
-          },
-          isEmail: {
-            msg: 'PLease provide a Valid Email Address'
-          },
-          notEmpty: {
-            msg: 'Please provide an Email Address',
-          }
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notNull: {
+          msg: 'Please provide an Email Address',
+        },
+        isEmail: {
+          msg: 'PLease provide a Valid Email Address'
+        },
+        notEmpty: {
+          msg: 'Please provide an Email Address',
         }
+      }
     },
     password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: 'Please provide a Password',
-          },
-          notEmpty: {
-            msg: 'Please provide a Password',
-          }
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Please provide a Password',
+        },
+        notEmpty: {
+          msg: 'Please provide a Password',
         }
+      }
     }
   }, {
     sequelize,
     modelName: 'User',
     hooks: {
-      beforeCreate: async function(user) {
+      beforeCreate: async function (user) {
         user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
       }
     }
@@ -70,9 +70,9 @@ module.exports = (sequelize, DataTypes) => {
   
   User.associate = (models) => {
     User.hasMany(models.Course, {
-        foreignKey: {
-            fieldName: 'userId'
-        },
+      foreignKey: {
+        fieldName: 'userId'
+      },
     });
   };
 

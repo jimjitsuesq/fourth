@@ -4,13 +4,16 @@ const routes = require('./routes');
 
 // load modules
 const express = require('express');
-const cors = require ('cors')
+const cors = require('cors')
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 var favicon = require('serve-favicon')
 
 
-const corsOptions = { origin: 'https://ecstatic-mirzakhani-746a17.netlify.app', credentials: true }
+const corsOptions = {
+  origin: 'https://ecstatic-mirzakhani-746a17.netlify.app',
+  credentials: true
+}
 
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
@@ -20,7 +23,7 @@ const app = express();
 
 
 app.use('/favicon.ico', express.static('public/images/favicon.ico'));
-app.use('/public', express.static('public')); 
+app.use('/public', express.static('public'));
 app.use(cookieParser('82e4e438a0705fabf61f9854e3b575af'));
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -40,14 +43,13 @@ app.use(morgan('dev'));
   try {
     await db.sync();
     console.log('Synced!')
-  }
-  catch (error) {
+  } catch (error) {
     console.log('Sync error!')
   }
 })();
 
 // A friendly greeting for the root route
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.json({
     message: 'Welcome to the Academic Curriculum Manager Rest API!',
   });

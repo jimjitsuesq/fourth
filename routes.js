@@ -1,9 +1,16 @@
 'use strict';
 
 const express = require('express');
-const { asyncHandler } = require('./middleware/async-handler');
-const { User, Course } = require('./models');
-const { authenticateUser } = require('./middleware/auth-user');
+const {
+  asyncHandler
+} = require('./middleware/async-handler');
+const {
+  User,
+  Course
+} = require('./models');
+const {
+  authenticateUser
+} = require('./middleware/auth-user');
 const cookieParser = require('cookie-parser');
 
 // Construct a router instance.
@@ -13,15 +20,26 @@ const router = express.Router();
  * Route to sign in a User
  */
 router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
-    try {
-        const authenticatedUser = await User.findOne({ 
-            where: {emailAddress: req.currentUser.emailAddress},
-            attributes: {exclude: ['createdAt', 'updatedAt']}});
-            res.status(200).cookie('user', authenticatedUser.password, { httpOnly: false, signed: true, secure: true, sameSite: 'none' }).json({ authenticatedUser }).end()
-    } catch (error) {
-        throw error;
-    }
-    
+  try {
+    const authenticatedUser = await User.findOne({
+      where: {
+        emailAddress: req.currentUser.emailAddress
+      },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      }
+    });
+    res.status(200).cookie('user', authenticatedUser.password, {
+      httpOnly: false,
+      signed: true,
+      secure: true,
+      sameSite: 'none'
+    }).json({
+      authenticatedUser
+    }).end()
+  } catch (error) {
+    throw error;
+  }
 }));
 
 /**
@@ -37,18 +55,20 @@ router.get('/signout', (req, res) => {
  * Route to create a new user
  */
 router.post('/users', asyncHandler(async (req, res) => {
-    try {
-      await User.create(req.body);
-        return res.status(201).send();
-    } catch (error) {
-      if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
-        const errors = error.errors.map(err => err.message);
-        res.status(400).json({ errors });
-        console.error(errors) 
-      } else {
-          throw error;
-      }
+  try {
+    await User.create(req.body);
+    return res.status(201).send();
+  } catch (error) {
+    if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+      const errors = error.errors.map(err => err.message);
+      res.status(400).json({
+        errors
+      });
+      console.error(errors)
+    } else {
+      throw error;
     }
+  }
 }));
 
 /**
@@ -57,14 +77,20 @@ router.post('/users', asyncHandler(async (req, res) => {
 router.get('/courses', asyncHandler(async (req, res) => {
   let courses = await Course.findAll({
     logging: false,
-    attributes: {exclude: ['createdAt', 'updatedAt']}, 
-    include: [{ 
+    attributes: {
+      exclude: ['createdAt', 'updatedAt']
+    },
+    include: [{
       model: User,
-      attributes: {exclude: ['createdAt', 'updatedAt']}
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      }
     }]
   });
   console.log('All courses retrieved.')
-  res.status(200).json({courses})
+  res.status(200).json({
+    courses
+  })
 }));
 
 /**
@@ -73,14 +99,20 @@ router.get('/courses', asyncHandler(async (req, res) => {
 router.get('/courses/:id', asyncHandler(async (req, res) => {
   try {
     let course = await Course.findByPk(req.params.id, {
-      attributes: {exclude: ['createdAt', 'updatedAt']}, 
-      include: [{ 
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      },
+      include: [{
         model: User,
-        attributes: {exclude: ['createdAt', 'updatedAt']}
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        }
       }]
     });
-    if(course !== null) {
-      res.status(200).json({course})
+    if (course !== null) {
+      res.status(200).json({
+        course
+      })
     } else {
       res.sendStatus(404)
     }
@@ -99,7 +131,9 @@ router.post('/courses', authenticateUser, asyncHandler(async (req, res, next) =>
   } catch (error) {
     if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
       const errors = error.errors.map(err => err.message);
-      res.status(400).json({ errors });
+      res.status(400).json({
+        errors
+      });
       console.error(errors)
     } else {
       throw error;
@@ -113,9 +147,13 @@ router.post('/courses', authenticateUser, asyncHandler(async (req, res, next) =>
 router.put('/courses/:id', authenticateUser, asyncHandler(async (req, res, next) => {
   try {
     const course = req.body;
-    const courseToUpdate = await Course.findByPk(req.params.id); 
-    if ( courseToUpdate.userId === req.currentUser.id) {
-      await Course.update(course, { where: { id: req.params.id } } );
+    const courseToUpdate = await Course.findByPk(req.params.id);
+    if (courseToUpdate.userId === req.currentUser.id) {
+      await Course.update(course, {
+        where: {
+          id: req.params.id
+        }
+      });
       res.status(204).end();
     } else {
       res.status(403).end();
@@ -123,7 +161,9 @@ router.put('/courses/:id', authenticateUser, asyncHandler(async (req, res, next)
   } catch (error) {
     if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
       const errors = error.errors.map(err => err.message);
-      res.status(400).send({ errors })
+      res.status(400).send({
+        errors
+      })
       console.log(error.message)
     } else {
       throw error;
@@ -136,8 +176,8 @@ router.put('/courses/:id', authenticateUser, asyncHandler(async (req, res, next)
  */
 router.delete('/courses/:id', authenticateUser, asyncHandler(async (req, res, next) => {
   let course = await Course.findByPk(req.params.id);
-  if ( course.userId === req.currentUser.id) {
-    try{
+  if (course.userId === req.currentUser.id) {
+    try {
       course.destroy();
       res.status(204).end()
     } catch (err) {
