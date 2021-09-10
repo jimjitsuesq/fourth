@@ -4,4 +4,12 @@ steps:
   args: ['install']
 - name: "gcr.io/cloud-builders/gcloud"  
   args: ["app", "deploy"]
-timeout: "1600s"
+  secretEnv: ["DB_NAME", "DB_USER", "DB_PASSWORD"]
+availableSecrets:
+  secretManager:
+  - versionName: projects/535449783252/secrets/DB_NAME/versions/1
+    env: "DB_NAME"
+  - versionName: projects/535449783252/secrets/DB_USER/versions/1
+    env: "DB_USER"
+  - versionName: projects/535449783252/secrets/DB_PASSWORD/versions/1
+    env: "DB_PASSWORD"
