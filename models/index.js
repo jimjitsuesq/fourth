@@ -3,12 +3,16 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+const ck = require('ckey');
 const basename = path.basename(__filename);
 const config = require('../config/config.js');
 const db = {};
+const DB_NAME = process.env.DB_NAME
+const DB_USER = process.env.DB_USER
+const DB_PASSWORD = process.env.DB_PASSWORD
 
-const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
-  dialect: config.dialect,
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+  dialect: "mysql",
   logging: false,
   host: '35.185.226.126',
   port: '3306',
